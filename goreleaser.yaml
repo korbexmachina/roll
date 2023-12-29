@@ -37,7 +37,7 @@ changelog:
       - "^test:"
 
 brews:
-  - name: go-archive-it
+  - name: roll
 
     # URL which is determined by the given Token (github, gitlab or gitea).
     #
