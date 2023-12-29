@@ -1,0 +1,98 @@
+# This is an example .goreleaser.yml file with some sensible defaults.
+# Make sure to check the documentation at https://goreleaser.com
+
+# The lines bellow are called `modelines`. See `:help modeline`
+# Feel free to remove those if you don't want/need to use them.
+# yaml-language-server: $schema=https://goreleaser.com/static/schema.json
+# vim: set ts=2 sw=2 tw=0 fo=cnqoj
+
+before:
+  hooks:
+    # You may remove this if you don't use go modules.
+    - go mod tidy
+
+builds:
+  - env:
+      - CGO_ENABLED=0
+    goos:
+      - linux
+      - darwin
+
+archives:
+  - format: tar.gz
+    # this name template makes the OS and Arch compatible with the results of `uname`.
+    name_template: >-
+      {{ .ProjectName }}_
+      {{- title .Os }}_
+      {{- if eq .Arch "amd64" }}x86_64
+      {{- else if eq .Arch "386" }}i386
+      {{- else }}{{ .Arch }}{{ end }}
+      {{- if .Arm }}v{{ .Arm }}{{ end }}
+
+changelog:
+  sort: asc
+  filters:
+    exclude:
+      - "^docs:"
+      - "^test:"
+
+brews:
+  - name: go-archive-it
+
+    # URL which is determined by the given Token (github, gitlab or gitea).
+    #
+    # Default depends on the client.
+    # Templates: allowed
+    url_template: "https://github.com/korbexmachina/roll/releases/download/{{ .Tag }}/{{ .ArtifactName }}"
+
+    # Git author used to commit to the repository.
+    commit_author:
+      name: korbexmachina
+      email: contact@korbexmachina.com
+
+    # The project name and current git tag are used in the format string.
+    #
+    # Templates: allowed
+    commit_msg_template: "Brew formula update for {{ .ProjectName }} version {{ .Tag }}"
+
+    # Folder inside the repository to put the formula.
+    folder: Formula
+
+    # Your app's homepage.
+    homepage: "https://github.com/korbexmachina/roll/"
+
+    # Your app's description.
+    #
+    # Templates: allowed
+    description: "Roll some dice in the terminal!"
+
+    # SPDX identifier of your app's license.
+    license: "MIT"
+
+    # Setting this will prevent goreleaser to actually try to commit the updated
+    # formula - instead, the formula file will be stored on the dist folder only,
+    # leaving the responsibility of publishing it to the user.
+    # If set to auto, the release will not be uploaded to the homebrew tap
+    # in case there is an indicator for prerelease in the tag e.g. v1.0.0-rc1
+    #
+    # Templates: allowed
+    # skip_upload: true
+
+    # So you can `brew test` your formula.
+    #
+    # Template: allowed
+    test: |
+      system "#{bin}/roll -h"
+      # ...
+
+    # Repository to push the generated files to.
+    repository:
+      # Repository owner.
+      #
+      # Templates: allowed
+      owner: korbexmachina
+
+      # Repository name.
+      #
+      # Templates: allowed
+      name: homebrew-tap
