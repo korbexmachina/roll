@@ -11,17 +11,16 @@ import (
 const HELP_MESSAGE = "Usage: roll <num>d<sides>\n"
 
 func main() {
-	if len(os.Args) != 2 {
+	// Check for help
+	if len(os.Args) != 2 || 
+	os.Args[1] == "help" || 
+	os.Args[1] == "-h"   || 
+	os.Args[1] == "--help" {
 		fmt.Printf("%s", HELP_MESSAGE)
 		return
 	}
 
-	if os.Args[1] == "help" || os.Args[1] == "-h" || os.Args[1] == "--help" {
-		fmt.Printf("%s", HELP_MESSAGE)
-		return
-	}
-
-
+	// Parse args
 	dX := os.Args[1]
 
 	num, sides, err := parseArgs(dX)
@@ -30,6 +29,7 @@ func main() {
 		return
 	}
 
+	// Roll dice
 	fmt.Printf("Rolling %dd%d\n", num, sides)
 
 	for i := 0; i < num; i++ {
@@ -44,13 +44,17 @@ func main() {
 }
 
 func rollDie(sides int) (int, error) {
+	// Check for valid number of sides
 	if sides < 1 {
 		return 0, fmt.Errorf("Invalid number of sides: %d", sides)
 	}
+
+	// Roll the die
 	return rand.Intn(sides) + 1, nil
 }
 
 func parseArgs(dX string) (int, int, error) {
+	// Check for valid number of dice
 	if dX[0] == 'd' {
 		dX = dX[1:]
 		sides, err := strconv.Atoi(dX)
@@ -60,6 +64,7 @@ func parseArgs(dX string) (int, int, error) {
 		return 1, sides, nil
 	}
 
+	// Parse the number of dice and sides
 	parts := strings.Split(dX, "d")
 	if len(parts) != 2 {
 		return 0, 0, fmt.Errorf("Invalid die format: %s", dX)
@@ -76,5 +81,4 @@ func parseArgs(dX string) (int, int, error) {
 	}
 
 	return num, sides, nil
-
 }
