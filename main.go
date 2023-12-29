@@ -29,9 +29,6 @@ func main() {
 		return
 	}
 
-	// Roll dice
-	fmt.Printf("Rolling %dd%d\n", num, sides)
-
 	for i := 0; i < num; i++ {
 		outcome, err := rollDie(sides)
 		if err != nil {
