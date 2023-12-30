@@ -31,7 +31,7 @@ roll 2d6
 
 ## Installation
 
-MacOS/Linux (Homebrew)
+Homebrew (MacOS/Linux)
 
 ```
 brew tap korbexmachina/tap
