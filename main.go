@@ -36,7 +36,7 @@ func main() {
 			return
 		}
 
-		fmt.Printf("Rolled a %d\n", outcome)
+		fmt.Printf("Rolled: %d\n", outcome)
 	}
 }
 
