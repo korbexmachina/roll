@@ -12,13 +12,13 @@ before:
     - go mod tidy
 
 builds:
-  - env:
-      - CGO_ENABLED=0
+  env:
+    - CGO_ENABLED=0
     goos:
       - linux
       - darwin
     
-  - ldflags:
+  ldflags:
     - -s -w -X main.Version={{.Version}} -X main.Commit={{.Commit}} -X main.BuildDate={{.Date}}
 
 archives:
