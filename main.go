@@ -51,6 +51,12 @@ func rollDie(sides int) (int, error) {
 }
 
 func parseArgs(dX string) (int, int, error) {
+	// Check for version flag
+	if dX == "-v" || dX == "--version" {
+		printVersion()
+		os.Exit(0)
+	}
+
 	// Check for valid number of dice
 	if dX[0] == 'd' {
 		dX = dX[1:]
@@ -78,4 +84,8 @@ func parseArgs(dX string) (int, int, error) {
 	}
 
 	return num, sides, nil
+}
+
+func printVersion() {
+	fmt.Printf("Version: %s\nBuild Date: %s\nCommit: %s\n", Version, BuildDate, Commit)
 }
